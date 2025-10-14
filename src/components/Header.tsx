@@ -1,4 +1,4 @@
-import { NavLink } from "react-router"
+import { Link, NavLink } from "react-router"
 import racket from "../assets/racket.png"
 
 export default function Header() {
@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <nav>
       <div>
-        <h5>Pro Racketeers</h5>
+        <Link style={{ textDecoration: 'none' }} to=""><h5>Pro Racketeers</h5></Link>
         <img src={racket} height={25} width={25}alt="Tennis racket" />
       </div>
       <div>
