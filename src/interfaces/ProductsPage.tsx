@@ -39,7 +39,7 @@ export default function ProductsPage() {
   return (
     <div style={{ textAlign: 'center' }}>
       <h1 style={{ margin: '30px 0 0 0' }}>Products</h1>
-      <p>
+      <p style={{ fontSize: '1.2rem' }}>
         At Pro Racketeers, we are committed to excellence, offering only the finest materials and products for tennis enthusiasts. Explore our carefully curated selection to elevate your game.
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
