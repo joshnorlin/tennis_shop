@@ -13,7 +13,6 @@ export default function Footer() {
     <footer>
       <div>
         {navLink("about", "About")}
-        {navLink("terms-and-conditions", "Terms & Conditions")}
         {navLink("privacy-policy", "Privacy Policy")}
       </div>
     </footer>
