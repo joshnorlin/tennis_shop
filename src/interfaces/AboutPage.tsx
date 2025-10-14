@@ -1,4 +1,4 @@
-export default function AbputPage() {
+export default function AboutPage() {
   return (
     <div>Hello World.</div>
   )
