@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './interfaces/HomePage';
@@ -8,6 +9,7 @@ import ContactUsPage from './interfaces/ContactUsPage';
 import AboutPage from './interfaces/AboutPage';
 import PrivacyPolicyPage from './interfaces/PrivacyPolicyPage';
 import CheckoutPage from './interfaces/CheckoutPage';
+import CartPage from './interfaces/CartPage';
 import LoginPage from './interfaces/LoginPage';
 import RegisterPage from './interfaces/RegisterPage';
 
@@ -21,6 +23,7 @@ function Layout() {
         <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -34,7 +37,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Layout />
+        <CartProvider>
+          <Layout />
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   );

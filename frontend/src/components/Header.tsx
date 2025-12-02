@@ -1,10 +1,12 @@
 import { Link, NavLink } from "react-router"
 import racket from "../assets/racket.png"
 import { useAuth } from "../context/AuthContext"
+import { useCart } from "../context/CartContext"
 
 export default function Header() {
   const auth = useAuth();
   const { loggedIn, user, logout, loading } = auth;
+  const { getItemCount } = useCart();
 
   const navLink = (url: string, label: string) => {
     return (
@@ -31,6 +33,16 @@ export default function Header() {
         {navLink("checkout", "Checkout")}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {loggedIn && (
+          <Link to="/cart" style={{ position: 'relative', textDecoration: 'none' }}>
+            <div style={{ fontSize: '1.5rem' }}>🛒</div>
+            {getItemCount() > 0 && (
+              <span style={{ position: 'absolute', top: '-8px', right: '-8px', backgroundColor: '#d32f2f', color: 'white', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                {getItemCount()}
+              </span>
+            )}
+          </Link>
+        )}
         {loading ? (
           <span style={{ fontSize: '0.9rem' }}>Loading...</span>
         ) : loggedIn ? (

@@ -1,12 +1,27 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 export default function CheckoutPage() {
   const [sameAsShipping, setSameAsShipping] = useState(true);
+  const [orderSuccess, setOrderSuccess] = useState(false);
   const { user, loggedIn, logout } = useAuth();
+  const { cart, clearCart, getTotalPrice } = useCart();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
+  };
+
+  const handlePlaceOrder = () => {
+    clearCart();
+    setOrderSuccess(true);
+  };
+
+  const handleBackToShop = () => {
+    setOrderSuccess(false);
+    navigate('/products');
   };
 
   if (!loggedIn || !user) {
@@ -16,6 +31,46 @@ export default function CheckoutPage() {
         <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
           You must be logged in to view your checkout. <a href="/login" style={{ color: '#2e7d32', fontWeight: 'bold' }}>Login here</a> or <a href="/register" style={{ color: '#2e7d32', fontWeight: 'bold' }}>register here</a>.
         </p>
+      </div>
+    );
+  }
+
+  if (cart.length === 0) {
+    return (
+      <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '2rem', textAlign: 'center' }}>
+        <h1 style={{ color: '#1a472a', marginBottom: '1rem' }}>Checkout</h1>
+        <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
+          Your cart is empty. <a href="/products" style={{ color: '#2e7d32', fontWeight: 'bold' }}>Continue shopping</a> to add items.
+        </p>
+      </div>
+    );
+  }
+
+  if (orderSuccess) {
+    return (
+      <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '2rem', textAlign: 'center', backgroundColor: '#e8f5e9', borderRadius: '8px', border: '2px solid #4caf50' }}>
+        <h1 style={{ color: '#2e7d32', marginBottom: '1rem' }}>Order Confirmed! 🎉</h1>
+        <p style={{ fontSize: '1.2rem', marginBottom: '1rem', color: '#1b5e20' }}>
+          Success! Your order is on its way!
+        </p>
+        <p style={{ fontSize: '1rem', marginBottom: '2rem', color: '#2e7d32' }}>
+          Thank you for your purchase. Your items will be delivered soon.
+        </p>
+        <button
+          onClick={handleBackToShop}
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#4caf50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            fontWeight: 'bold'
+          }}
+        >
+          Continue Shopping
+        </button>
       </div>
     );
   }
@@ -192,14 +247,14 @@ export default function CheckoutPage() {
 
         <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
           <span>Item Total</span>
-          <span>$120.00</span>
+          <span>${getTotalPrice().toFixed(2)}</span>
         </div>
 
       </section>
 
       {/* Place Order Button */}
       <div style={{display: 'flex', gap: '1rem', justifyContent: 'center'}}>
-        <button type="submit" style={{minWidth: '150px'}}>Place Order</button>
+        <button onClick={handlePlaceOrder} type="submit" style={{minWidth: '150px'}}>Place Order</button>
         <button type="button" style={{minWidth: '150px', backgroundColor: '#ddd', color: '#333'}}>Cancel</button>
       </div>
     </div>

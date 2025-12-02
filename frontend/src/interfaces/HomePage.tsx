@@ -1,22 +1,48 @@
+
 import pink_racket from '../assets/pink_racket.jpg';
 import tennis_bicycle from '../assets/tennis_bicycle.jpg';
 import tennis_shoes from '../assets/tennis_shoes.jpg';
-
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router';
 const featuredProducts = [
-  { src: pink_racket, name: "Pink Racket", price: "$25" },
-  { src: tennis_shoes, name: "Tennis Shoes", price: "$60" },
-  { src: tennis_bicycle, name: "Tennis Bicycle", price: "$150" },
+  { id: "6", src: pink_racket, name: "Pink Racket", price: 25 },
+  { id: "8", src: tennis_bicycle, name: "Tennis Bicycle", price: 150 },
+  { id: "9", src: tennis_shoes, name: "Tennis Shoes", price: 60 },
 ];
 
+
+
 export default function HomePage() {
-  const productCard = (src: string, name: string, price: string) => {
+  const { addToCart } = useCart();
+  const { loggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddToCart = (featuredProduct: typeof featuredProducts[0]) => {
+    if (!loggedIn) {
+      navigate('/login');
+      return;
+    }
+    addToCart({
+      id: featuredProduct.id,
+      name: featuredProduct.name,
+      price: featuredProduct.price,
+      quantity: 1,
+      image: featuredProduct.src,
+    });
+    alert(`${featuredProduct.name} added to cart!`);
+  };
+
+  const productCard = (product: typeof featuredProducts[0]) => {
     return (
       <div style={{ backgroundColor: 'white', border: '1px solid #ddd', borderRadius: '8px', padding: '1rem', margin: '1rem', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-        <img src={src} alt={name} style={{ width: 250, height: 'auto' }} />
+        <img src={product.src} alt={product.name} style={{ width: 250, height: 'auto' }} />
         <div>
-          <h3>{name}</h3>
-          <h3>{price}</h3>
-          <button>Add to cart</button>
+          <h3>{product.name}</h3>
+          <h3>${product.price}</h3>
+          {loggedIn && (
+            <button onClick={() => handleAddToCart(product)}>Add to cart</button>
+          )}
         </div>
       </div>
     );
@@ -31,7 +57,7 @@ export default function HomePage() {
       
       <h2 style={{ fontSize: '2rem' }}>Featured Products</h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {featuredProducts.map(product => productCard(product.src, product.name, product.price))}
+        {featuredProducts.map(product => productCard(product))}
       </div>
 
       <h2 style={{ fontSize: '2rem' }}>Hot Deals</h2>
