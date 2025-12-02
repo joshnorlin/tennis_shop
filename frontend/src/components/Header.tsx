@@ -1,7 +1,11 @@
 import { Link, NavLink } from "react-router"
 import racket from "../assets/racket.png"
+import { useAuth } from "../context/AuthContext"
 
 export default function Header() {
+  const auth = useAuth();
+  const { loggedIn, user, logout, loading } = auth;
+
   const navLink = (url: string, label: string) => {
     return (
       <NavLink
@@ -14,17 +18,45 @@ export default function Header() {
   }
 
   return (
-    <nav>
-      <div>
-        <Link style={{ textDecoration: 'none' }} to=""><h5>Pro Racketeers</h5></Link>
-        <img src={racket} height={25} width={25}alt="Tennis racket" />
+    <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <Link style={{ textDecoration: 'none' }} to=""><h5 style={{ margin: '0' }}>Pro Racketeers</h5></Link>
+        <img src={racket} height={25} width={25} alt="Tennis racket" />
       </div>
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
         {navLink("", "Home")}
         {navLink("products", "Products")}
         {navLink("contact-us", "Contact Us")}
         {navLink("about", "About")}
         {navLink("checkout", "Checkout")}
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {loading ? (
+          <span style={{ fontSize: '0.9rem' }}>Loading...</span>
+        ) : loggedIn ? (
+          <>
+            <span style={{ fontSize: '0.9rem' }}>Welcome, {user?.name || user?.email}</span>
+            <button
+              onClick={logout}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: '#d32f2f',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/register">Register</NavLink>
+          </>
+        )}
       </div>
     </nav>
   )

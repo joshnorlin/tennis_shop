@@ -1,11 +1,48 @@
 import { useState } from "react";
+import { useAuth } from '../context/AuthContext';
 
 export default function CheckoutPage() {
   const [sameAsShipping, setSameAsShipping] = useState(true);
+  const { user, loggedIn, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
+  if (!loggedIn || !user) {
+    return (
+      <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '2rem', textAlign: 'center' }}>
+        <h1 style={{ color: '#1a472a', marginBottom: '1rem' }}>Checkout</h1>
+        <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
+          You must be logged in to view your checkout. <a href="/login" style={{ color: '#2e7d32', fontWeight: 'bold' }}>Login here</a> or <a href="/register" style={{ color: '#2e7d32', fontWeight: 'bold' }}>register here</a>.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div style={{maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem'}}>
-      <h1 style={{textAlign: 'center', marginBottom: '3rem'}}>Checkout</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1 style={{textAlign: 'center', marginBottom: '0', flex: 1}}>Checkout</h1>
+        <div style={{ textAlign: 'right' }}>
+          <p style={{ marginBottom: '0.5rem', fontSize: '0.95rem' }}><strong>{user.name || user.email}</strong></p>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#d32f2f',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '0.9rem'
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      </div>
       
       
       {/* Shipping Information Form */}
