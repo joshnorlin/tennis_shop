@@ -31,6 +31,7 @@ export default function Header() {
         {navLink("contact-us", "Contact Us")}
         {navLink("about", "About")}
         {navLink("checkout", "Checkout")}
+        {loggedIn && navLink("orders", "Orders")}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         {loggedIn && (

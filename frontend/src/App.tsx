@@ -9,6 +9,7 @@ import ContactUsPage from './interfaces/ContactUsPage';
 import AboutPage from './interfaces/AboutPage';
 import PrivacyPolicyPage from './interfaces/PrivacyPolicyPage';
 import CheckoutPage from './interfaces/CheckoutPage';
+import OrdersPage from './interfaces/OrdersPage';
 import CartPage from './interfaces/CartPage';
 import LoginPage from './interfaces/LoginPage';
 import RegisterPage from './interfaces/RegisterPage';
@@ -24,6 +25,7 @@ function Layout() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/orders" element={<OrdersPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

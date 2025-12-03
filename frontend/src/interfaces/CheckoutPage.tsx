@@ -9,14 +9,32 @@ export default function CheckoutPage() {
   const { user, loggedIn, logout } = useAuth();
   const { cart, clearCart, getTotalPrice } = useCart();
   const navigate = useNavigate();
+  const BASE_URL = 'http://localhost/tennis_shop/backend';
 
   const handleLogout = async () => {
     await logout();
   };
 
-  const handlePlaceOrder = () => {
-    clearCart();
-    setOrderSuccess(true);
+  const handlePlaceOrder = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/create_order.php`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cart, total: getTotalPrice() }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        clearCart();
+        setOrderSuccess(true);
+      } else {
+        console.error('Order failed', data);
+        alert('Order failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error('Order request failed', err);
+      alert('Order request failed, please try again later.');
+    }
   };
 
   const handleBackToShop = () => {
